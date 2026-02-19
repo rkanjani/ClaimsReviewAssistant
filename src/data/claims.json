@@ -1,0 +1,544 @@
+[
+  {
+    "id": "CLM-1001",
+    "patientName": "Maria Santos",
+    "patientId": "PT-78234",
+    "dateOfService": "2024-11-15",
+    "dateSubmitted": "2024-11-20",
+    "dateDenied": "2024-12-05",
+    "deadlineDate": "2025-03-05",
+    "status": "denied",
+    "priority": "high",
+    "amount": 4850.00,
+    "amountPaid": 0,
+    "insuranceProvider": "BlueCross BlueShield",
+    "insurancePolicyNumber": "BCB-887234112",
+    "procedureCodes": ["99213", "96372"],
+    "diagnosisCodes": ["E11.9", "I10"],
+    "denialReason": "Medical necessity not established",
+    "denialCode": "CO-50",
+    "notes": ["Initial claim submission included all required documentation", "Prior authorization was obtained"],
+    "actionHistory": [
+      {
+        "id": "ACT-001",
+        "timestamp": "2024-11-20T10:30:00Z",
+        "action": "Claim submitted",
+        "performedBy": "System"
+      },
+      {
+        "id": "ACT-002",
+        "timestamp": "2024-12-05T14:22:00Z",
+        "action": "Claim denied",
+        "performedBy": "BlueCross BlueShield",
+        "notes": "Denial reason: Medical necessity not established"
+      }
+    ],
+    "assignedTo": "Sarah Johnson",
+    "facility": "Downtown Medical Center",
+    "providerNpi": "1234567890"
+  },
+  {
+    "id": "CLM-1002",
+    "patientName": "James Wilson",
+    "patientId": "PT-45891",
+    "dateOfService": "2024-11-10",
+    "dateSubmitted": "2024-11-12",
+    "dateDenied": "2024-11-28",
+    "deadlineDate": "2025-02-28",
+    "status": "denied",
+    "priority": "urgent",
+    "amount": 12350.00,
+    "amountPaid": 0,
+    "insuranceProvider": "Aetna",
+    "insurancePolicyNumber": "AET-445678923",
+    "procedureCodes": ["27447", "99232"],
+    "diagnosisCodes": ["M17.11", "Z96.651"],
+    "denialReason": "Prior authorization not obtained",
+    "denialCode": "CO-15",
+    "notes": ["Urgent surgery case", "Patient has documented knee osteoarthritis"],
+    "actionHistory": [
+      {
+        "id": "ACT-003",
+        "timestamp": "2024-11-12T08:15:00Z",
+        "action": "Claim submitted",
+        "performedBy": "System"
+      },
+      {
+        "id": "ACT-004",
+        "timestamp": "2024-11-28T16:45:00Z",
+        "action": "Claim denied",
+        "performedBy": "Aetna",
+        "notes": "Prior authorization required but not obtained"
+      }
+    ],
+    "assignedTo": "Sarah Johnson",
+    "facility": "Orthopedic Surgery Center",
+    "providerNpi": "9876543210"
+  },
+  {
+    "id": "CLM-1003",
+    "patientName": "Emily Chen",
+    "patientId": "PT-67234",
+    "dateOfService": "2024-11-08",
+    "dateSubmitted": "2024-11-10",
+    "dateDenied": "2024-11-25",
+    "deadlineDate": "2025-02-25",
+    "status": "rejected",
+    "priority": "medium",
+    "amount": 890.00,
+    "amountPaid": 0,
+    "insuranceProvider": "UnitedHealthcare",
+    "insurancePolicyNumber": "UHC-334521890",
+    "procedureCodes": ["99214", "85025"],
+    "diagnosisCodes": ["D64.9"],
+    "denialReason": "Invalid procedure code combination",
+    "denialCode": "CO-4",
+    "notes": ["Lab work and office visit on same day", "May need modifier"],
+    "actionHistory": [
+      {
+        "id": "ACT-005",
+        "timestamp": "2024-11-10T11:00:00Z",
+        "action": "Claim submitted",
+        "performedBy": "System"
+      },
+      {
+        "id": "ACT-006",
+        "timestamp": "2024-11-25T09:30:00Z",
+        "action": "Claim rejected",
+        "performedBy": "UnitedHealthcare",
+        "notes": "Invalid code combination"
+      }
+    ],
+    "assignedTo": "Michael Brown",
+    "facility": "Family Practice Associates",
+    "providerNpi": "5678901234"
+  },
+  {
+    "id": "CLM-1004",
+    "patientName": "Robert Martinez",
+    "patientId": "PT-89012",
+    "dateOfService": "2024-10-28",
+    "dateSubmitted": "2024-10-30",
+    "deadlineDate": "2025-01-30",
+    "status": "underpaid",
+    "priority": "medium",
+    "amount": 3200.00,
+    "amountPaid": 1280.00,
+    "insuranceProvider": "Cigna",
+    "insurancePolicyNumber": "CIG-778901234",
+    "procedureCodes": ["99215", "93000", "36415"],
+    "diagnosisCodes": ["I25.10", "I48.91"],
+    "denialReason": "Payment reduced based on fee schedule",
+    "denialCode": "CO-45",
+    "notes": ["Paid at 40% of billed amount", "Need to review contract rates"],
+    "actionHistory": [
+      {
+        "id": "ACT-007",
+        "timestamp": "2024-10-30T14:00:00Z",
+        "action": "Claim submitted",
+        "performedBy": "System"
+      },
+      {
+        "id": "ACT-008",
+        "timestamp": "2024-11-15T10:00:00Z",
+        "action": "Partial payment received",
+        "performedBy": "Cigna",
+        "notes": "Paid $1,280.00 of $3,200.00"
+      }
+    ],
+    "assignedTo": "Sarah Johnson",
+    "facility": "Cardiology Specialists",
+    "providerNpi": "3456789012"
+  },
+  {
+    "id": "CLM-1005",
+    "patientName": "Linda Thompson",
+    "patientId": "PT-23456",
+    "dateOfService": "2024-11-20",
+    "dateSubmitted": "2024-11-22",
+    "status": "pending",
+    "priority": "low",
+    "amount": 450.00,
+    "insuranceProvider": "Humana",
+    "insurancePolicyNumber": "HUM-556789012",
+    "procedureCodes": ["99213"],
+    "diagnosisCodes": ["J06.9"],
+    "notes": ["Routine follow-up visit", "No issues expected"],
+    "actionHistory": [
+      {
+        "id": "ACT-009",
+        "timestamp": "2024-11-22T16:30:00Z",
+        "action": "Claim submitted",
+        "performedBy": "System"
+      }
+    ],
+    "assignedTo": "Michael Brown",
+    "facility": "Primary Care Clinic",
+    "providerNpi": "6789012345"
+  },
+  {
+    "id": "CLM-1006",
+    "patientName": "William Davis",
+    "patientId": "PT-34567",
+    "dateOfService": "2024-11-05",
+    "dateSubmitted": "2024-11-07",
+    "dateDenied": "2024-11-22",
+    "deadlineDate": "2025-02-22",
+    "status": "appealed",
+    "priority": "high",
+    "amount": 8750.00,
+    "amountPaid": 0,
+    "insuranceProvider": "BlueCross BlueShield",
+    "insurancePolicyNumber": "BCB-998877665",
+    "procedureCodes": ["43239", "74160"],
+    "diagnosisCodes": ["K21.0", "K44.9"],
+    "denialReason": "Procedure deemed experimental",
+    "denialCode": "CO-50",
+    "notes": ["Appeal submitted with peer-reviewed literature", "Awaiting response"],
+    "actionHistory": [
+      {
+        "id": "ACT-010",
+        "timestamp": "2024-11-07T09:00:00Z",
+        "action": "Claim submitted",
+        "performedBy": "System"
+      },
+      {
+        "id": "ACT-011",
+        "timestamp": "2024-11-22T11:30:00Z",
+        "action": "Claim denied",
+        "performedBy": "BlueCross BlueShield"
+      },
+      {
+        "id": "ACT-012",
+        "timestamp": "2024-12-01T14:00:00Z",
+        "action": "Appeal submitted",
+        "performedBy": "Sarah Johnson",
+        "notes": "Included supporting medical literature"
+      }
+    ],
+    "assignedTo": "Sarah Johnson",
+    "facility": "Gastroenterology Associates",
+    "providerNpi": "7890123456"
+  },
+  {
+    "id": "CLM-1007",
+    "patientName": "Susan Anderson",
+    "patientId": "PT-45678",
+    "dateOfService": "2024-11-12",
+    "dateSubmitted": "2024-11-14",
+    "dateDenied": "2024-12-02",
+    "deadlineDate": "2025-03-02",
+    "status": "denied",
+    "priority": "medium",
+    "amount": 2100.00,
+    "amountPaid": 0,
+    "insuranceProvider": "Aetna",
+    "insurancePolicyNumber": "AET-112233445",
+    "procedureCodes": ["97110", "97140", "97530"],
+    "diagnosisCodes": ["M54.5", "M62.830"],
+    "denialReason": "Maximum visits exceeded for calendar year",
+    "denialCode": "CO-119",
+    "notes": ["Patient has chronic back pain", "Previous visits approved"],
+    "actionHistory": [
+      {
+        "id": "ACT-013",
+        "timestamp": "2024-11-14T10:45:00Z",
+        "action": "Claim submitted",
+        "performedBy": "System"
+      },
+      {
+        "id": "ACT-014",
+        "timestamp": "2024-12-02T15:00:00Z",
+        "action": "Claim denied",
+        "performedBy": "Aetna"
+      }
+    ],
+    "assignedTo": "Michael Brown",
+    "facility": "Physical Therapy Center",
+    "providerNpi": "8901234567"
+  },
+  {
+    "id": "CLM-1008",
+    "patientName": "David Lee",
+    "patientId": "PT-56789",
+    "dateOfService": "2024-10-25",
+    "dateSubmitted": "2024-10-28",
+    "deadlineDate": "2025-01-28",
+    "status": "resolved",
+    "priority": "low",
+    "amount": 1650.00,
+    "amountPaid": 1650.00,
+    "insuranceProvider": "UnitedHealthcare",
+    "insurancePolicyNumber": "UHC-667788990",
+    "procedureCodes": ["99214", "90834"],
+    "diagnosisCodes": ["F32.1", "F41.1"],
+    "notes": ["Mental health follow-up", "Paid in full after resubmission"],
+    "actionHistory": [
+      {
+        "id": "ACT-015",
+        "timestamp": "2024-10-28T13:00:00Z",
+        "action": "Claim submitted",
+        "performedBy": "System"
+      },
+      {
+        "id": "ACT-016",
+        "timestamp": "2024-11-10T09:00:00Z",
+        "action": "Claim denied",
+        "performedBy": "UnitedHealthcare"
+      },
+      {
+        "id": "ACT-017",
+        "timestamp": "2024-11-15T11:00:00Z",
+        "action": "Claim resubmitted with corrected codes",
+        "performedBy": "Sarah Johnson"
+      },
+      {
+        "id": "ACT-018",
+        "timestamp": "2024-11-28T14:30:00Z",
+        "action": "Payment received",
+        "performedBy": "UnitedHealthcare",
+        "notes": "Paid in full: $1,650.00"
+      }
+    ],
+    "assignedTo": "Sarah Johnson",
+    "facility": "Behavioral Health Services",
+    "providerNpi": "9012345678"
+  },
+  {
+    "id": "CLM-1009",
+    "patientName": "Jennifer White",
+    "patientId": "PT-67890",
+    "dateOfService": "2024-11-18",
+    "dateSubmitted": "2024-11-20",
+    "status": "pending",
+    "priority": "medium",
+    "amount": 5400.00,
+    "insuranceProvider": "Cigna",
+    "insurancePolicyNumber": "CIG-223344556",
+    "procedureCodes": ["76830", "58100"],
+    "diagnosisCodes": ["N83.20", "D25.9"],
+    "notes": ["Diagnostic imaging and biopsy", "Prior auth obtained"],
+    "actionHistory": [
+      {
+        "id": "ACT-019",
+        "timestamp": "2024-11-20T08:30:00Z",
+        "action": "Claim submitted",
+        "performedBy": "System"
+      }
+    ],
+    "assignedTo": "Michael Brown",
+    "facility": "Women's Health Clinic",
+    "providerNpi": "0123456789"
+  },
+  {
+    "id": "CLM-1010",
+    "patientName": "Michael Brown",
+    "patientId": "PT-78901",
+    "dateOfService": "2024-11-01",
+    "dateSubmitted": "2024-11-04",
+    "dateDenied": "2024-11-20",
+    "deadlineDate": "2025-02-20",
+    "status": "denied",
+    "priority": "urgent",
+    "amount": 15200.00,
+    "amountPaid": 0,
+    "insuranceProvider": "Humana",
+    "insurancePolicyNumber": "HUM-889900112",
+    "procedureCodes": ["63030", "22612"],
+    "diagnosisCodes": ["M47.816", "G89.29"],
+    "denialReason": "Conservative treatment not attempted",
+    "denialCode": "CO-50",
+    "notes": ["Spinal surgery", "Patient has documented failed conservative treatment"],
+    "actionHistory": [
+      {
+        "id": "ACT-020",
+        "timestamp": "2024-11-04T15:00:00Z",
+        "action": "Claim submitted",
+        "performedBy": "System"
+      },
+      {
+        "id": "ACT-021",
+        "timestamp": "2024-11-20T10:30:00Z",
+        "action": "Claim denied",
+        "performedBy": "Humana"
+      }
+    ],
+    "assignedTo": "Sarah Johnson",
+    "facility": "Spine & Neurosurgery Center",
+    "providerNpi": "2345678901"
+  },
+  {
+    "id": "CLM-1011",
+    "patientName": "Patricia Garcia",
+    "patientId": "PT-89012",
+    "dateOfService": "2024-11-22",
+    "dateSubmitted": "2024-11-25",
+    "status": "pending",
+    "priority": "low",
+    "amount": 320.00,
+    "insuranceProvider": "BlueCross BlueShield",
+    "insurancePolicyNumber": "BCB-445566778",
+    "procedureCodes": ["99212"],
+    "diagnosisCodes": ["J02.9"],
+    "notes": ["Minor illness visit"],
+    "actionHistory": [
+      {
+        "id": "ACT-022",
+        "timestamp": "2024-11-25T09:00:00Z",
+        "action": "Claim submitted",
+        "performedBy": "System"
+      }
+    ],
+    "assignedTo": "Michael Brown",
+    "facility": "Urgent Care Plus",
+    "providerNpi": "3456789012"
+  },
+  {
+    "id": "CLM-1012",
+    "patientName": "Christopher Taylor",
+    "patientId": "PT-90123",
+    "dateOfService": "2024-10-15",
+    "dateSubmitted": "2024-10-18",
+    "dateDenied": "2024-11-05",
+    "deadlineDate": "2025-02-05",
+    "status": "rejected",
+    "priority": "high",
+    "amount": 6800.00,
+    "amountPaid": 0,
+    "insuranceProvider": "Aetna",
+    "insurancePolicyNumber": "AET-778899001",
+    "procedureCodes": ["43235", "43251"],
+    "diagnosisCodes": ["K29.70", "K25.9"],
+    "denialReason": "Duplicate claim submission",
+    "denialCode": "CO-18",
+    "notes": ["Endoscopy procedures", "This is not a duplicate - different dates"],
+    "actionHistory": [
+      {
+        "id": "ACT-023",
+        "timestamp": "2024-10-18T11:30:00Z",
+        "action": "Claim submitted",
+        "performedBy": "System"
+      },
+      {
+        "id": "ACT-024",
+        "timestamp": "2024-11-05T14:00:00Z",
+        "action": "Claim rejected",
+        "performedBy": "Aetna"
+      }
+    ],
+    "assignedTo": "Sarah Johnson",
+    "facility": "Digestive Health Institute",
+    "providerNpi": "4567890123"
+  },
+  {
+    "id": "CLM-1013",
+    "patientName": "Nancy Robinson",
+    "patientId": "PT-01234",
+    "dateOfService": "2024-11-08",
+    "dateSubmitted": "2024-11-11",
+    "deadlineDate": "2025-02-11",
+    "status": "underpaid",
+    "priority": "medium",
+    "amount": 2400.00,
+    "amountPaid": 960.00,
+    "insuranceProvider": "UnitedHealthcare",
+    "insurancePolicyNumber": "UHC-990011223",
+    "procedureCodes": ["99215", "90837"],
+    "diagnosisCodes": ["F33.1", "F40.10"],
+    "denialReason": "Reduced to contracted rate",
+    "denialCode": "CO-45",
+    "notes": ["Psychiatric evaluation", "Contract rate seems incorrect"],
+    "actionHistory": [
+      {
+        "id": "ACT-025",
+        "timestamp": "2024-11-11T10:00:00Z",
+        "action": "Claim submitted",
+        "performedBy": "System"
+      },
+      {
+        "id": "ACT-026",
+        "timestamp": "2024-11-25T16:00:00Z",
+        "action": "Partial payment received",
+        "performedBy": "UnitedHealthcare",
+        "notes": "Paid $960.00"
+      }
+    ],
+    "assignedTo": "Michael Brown",
+    "facility": "Mental Wellness Center",
+    "providerNpi": "5678901234"
+  },
+  {
+    "id": "CLM-1014",
+    "patientName": "Daniel Harris",
+    "patientId": "PT-12345",
+    "dateOfService": "2024-11-25",
+    "dateSubmitted": "2024-11-27",
+    "status": "pending",
+    "priority": "high",
+    "amount": 9200.00,
+    "insuranceProvider": "Cigna",
+    "insurancePolicyNumber": "CIG-112233445",
+    "procedureCodes": ["29881", "29876"],
+    "diagnosisCodes": ["M23.20", "S83.511A"],
+    "notes": ["Arthroscopic knee surgery", "Expedited processing requested"],
+    "actionHistory": [
+      {
+        "id": "ACT-027",
+        "timestamp": "2024-11-27T14:00:00Z",
+        "action": "Claim submitted",
+        "performedBy": "System"
+      }
+    ],
+    "assignedTo": "Sarah Johnson",
+    "facility": "Sports Medicine Clinic",
+    "providerNpi": "6789012345"
+  },
+  {
+    "id": "CLM-1015",
+    "patientName": "Karen Mitchell",
+    "patientId": "PT-23456",
+    "dateOfService": "2024-10-20",
+    "dateSubmitted": "2024-10-23",
+    "dateDenied": "2024-11-08",
+    "deadlineDate": "2025-02-08",
+    "status": "resolved",
+    "priority": "low",
+    "amount": 780.00,
+    "amountPaid": 780.00,
+    "insuranceProvider": "Humana",
+    "insurancePolicyNumber": "HUM-334455667",
+    "procedureCodes": ["99213", "71046"],
+    "diagnosisCodes": ["J18.9"],
+    "notes": ["Initially denied, overturned on first level appeal"],
+    "actionHistory": [
+      {
+        "id": "ACT-028",
+        "timestamp": "2024-10-23T08:00:00Z",
+        "action": "Claim submitted",
+        "performedBy": "System"
+      },
+      {
+        "id": "ACT-029",
+        "timestamp": "2024-11-08T12:00:00Z",
+        "action": "Claim denied",
+        "performedBy": "Humana"
+      },
+      {
+        "id": "ACT-030",
+        "timestamp": "2024-11-12T09:30:00Z",
+        "action": "Appeal submitted",
+        "performedBy": "Michael Brown"
+      },
+      {
+        "id": "ACT-031",
+        "timestamp": "2024-11-28T11:00:00Z",
+        "action": "Appeal approved - Payment received",
+        "performedBy": "Humana",
+        "notes": "Full payment: $780.00"
+      }
+    ],
+    "assignedTo": "Michael Brown",
+    "facility": "Community Health Center",
+    "providerNpi": "7890123456"
+  }
+]
