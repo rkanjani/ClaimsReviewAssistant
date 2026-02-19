@@ -34,7 +34,7 @@ export function ActionConfirmation({ confirmation, claim, onAction }: ActionConf
   return (
     <ConfirmationCard
       title={`Recommendation for ${claim.id}`}
-      icon={<Lightbulb className="h-5 w-5 text-secondary" />}
+      icon={<Lightbulb className="h-5 w-5 text-[#16a34a]" />}
       status={confirmation.status}
       onApprove={() => onAction(confirmation, 'approve')}
       onDismiss={() => onAction(confirmation, 'dismiss')}

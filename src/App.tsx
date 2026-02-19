@@ -1,15 +1,52 @@
-import { useState } from 'react';
-import { MessageSquare } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { MessageSquare, Loader2 } from 'lucide-react';
 import { AppShell } from '@/components/layout';
 import { ClaimsList, ClaimDetailPanel, ClaimDetailView } from '@/components/claims';
 import { ChatContainer } from '@/components/chat';
 import { Button } from '@/components/ui/button';
 import { useKeyboardShortcuts } from '@/hooks';
+import { useClaimsStore } from '@/stores';
 import { cn } from '@/lib/utils';
 
 function App() {
   useKeyboardShortcuts();
   const [isMobileChatOpen, setIsMobileChatOpen] = useState(false);
+  const { fetchClaims, isLoading, error, claims } = useClaimsStore();
+
+  // Fetch claims on app startup
+  useEffect(() => {
+    fetchClaims();
+  }, [fetchClaims]);
+
+  // Show loading state
+  if (isLoading && claims.length === 0) {
+    return (
+      <AppShell>
+        <div className="h-full flex items-center justify-center">
+          <div className="text-center">
+            <Loader2 className="h-8 w-8 animate-spin mx-auto text-primary" />
+            <p className="mt-2 text-muted-foreground">Loading claims...</p>
+          </div>
+        </div>
+      </AppShell>
+    );
+  }
+
+  // Show error state
+  if (error && claims.length === 0) {
+    return (
+      <AppShell>
+        <div className="h-full flex items-center justify-center">
+          <div className="text-center">
+            <p className="text-destructive">{error}</p>
+            <Button onClick={() => fetchClaims()} className="mt-4">
+              Retry
+            </Button>
+          </div>
+        </div>
+      </AppShell>
+    );
+  }
 
   return (
     <AppShell>

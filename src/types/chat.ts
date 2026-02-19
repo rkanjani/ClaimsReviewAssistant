@@ -17,6 +17,15 @@ export interface PendingConfirmation {
   data: SuggestedAction | AppealDraft | StatusUpdate;
   status: 'pending' | 'approved' | 'dismissed' | 'modified';
   modifiedData?: SuggestedAction | AppealDraft | StatusUpdate;
+  executionPayload?: {
+    claimId: string;
+    newStatus?: string;
+    actionTaken?: string;
+    notes?: string;
+    appealType?: string;
+    body?: string;
+    subject?: string;
+  };
 }
 
 export interface ChatMessage {

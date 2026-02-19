@@ -1,112 +1,15 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import type { Claim, ClaimStatus, ClaimFilter, ClaimSort, ClaimAction, ClaimPriority } from '@/types/claim';
-import rawClaimsData from '@/data/claims.json';
-import { generateId, getDaysUntil } from '@/lib/utils';
-
-// Raw JSON structure from claims.json
-interface RawLineItem {
-  cptCode: string;
-  description: string;
-  modifier?: string;
-  units: number;
-  billedAmount: number;
-  allowedAmount: number | null;
-  paidAmount: number;
-}
-
-interface RawPriorAction {
-  date: string;
-  type: string;
-  description: string;
-  outcome: string;
-}
-
-interface RawClaim {
-  claimId: string;
-  patient: {
-    name: string;
-    dateOfBirth: string;
-    memberId: string;
-  };
-  provider: {
-    name: string;
-    npi: string;
-    specialty: string;
-    facility: string;
-  };
-  payer: {
-    name: string;
-    payerId: string;
-  };
-  dateOfService: string;
-  dateSubmitted: string;
-  lineItems: RawLineItem[];
-  totalBilledAmount: number;
-  totalAllowedAmount: number | null;
-  totalPaidAmount: number;
-  status: ClaimStatus;
-  denialReason: string | null;
-  denialCode: string | null;
-  payerNotes: string;
-  priorActions: RawPriorAction[];
-  filingDeadline: string | null;
-}
-
-function computePriority(claim: RawClaim): ClaimPriority {
-  const deadline = claim.filingDeadline;
-  const amount = claim.totalBilledAmount;
-
-  if (deadline) {
-    const days = getDaysUntil(deadline);
-    if (days <= 14) return 'urgent';
-    if (days <= 30) return 'high';
-  }
-
-  if (amount >= 10000) return 'high';
-  if (amount >= 5000) return 'medium';
-
-  return 'low';
-}
-
-function transformClaim(raw: RawClaim): Claim {
-  return {
-    id: raw.claimId,
-    patientName: raw.patient.name,
-    patientId: raw.patient.memberId,
-    dateOfService: raw.dateOfService,
-    dateSubmitted: raw.dateSubmitted,
-    deadlineDate: raw.filingDeadline || undefined,
-    status: raw.status,
-    priority: computePriority(raw),
-    amount: raw.totalBilledAmount,
-    amountPaid: raw.totalPaidAmount > 0 ? raw.totalPaidAmount : undefined,
-    insuranceProvider: raw.payer.name,
-    insurancePolicyNumber: raw.payer.payerId,
-    procedureCodes: raw.lineItems.map(item => item.cptCode),
-    diagnosisCodes: [],
-    denialReason: raw.denialReason || undefined,
-    denialCode: raw.denialCode || undefined,
-    notes: raw.payerNotes ? [raw.payerNotes] : [],
-    actionHistory: raw.priorActions.map((action, index) => ({
-      id: `ACT-${raw.claimId}-${index}`,
-      timestamp: action.date,
-      action: action.type,
-      performedBy: 'System',
-      notes: action.description,
-    })),
-    facility: raw.provider.facility,
-    providerNpi: raw.provider.npi,
-  };
-}
-
-const claimsData = (rawClaimsData as RawClaim[]).map(transformClaim);
+import { generateId } from '@/lib/utils';
 
 interface ClaimsState {
   claims: Claim[];
   selectedClaimId: string | null;
   filter: ClaimFilter;
   sort: ClaimSort;
+  isLoading: boolean;
+  error: string | null;
 
   // Actions
   selectClaim: (id: string | null) => void;
@@ -117,6 +20,8 @@ interface ClaimsState {
   resetFilters: () => void;
   getClaim: (id: string) => Claim | undefined;
   getFilteredClaims: () => Claim[];
+  fetchClaims: () => Promise<void>;
+  refreshClaims: () => Promise<void>;
 }
 
 const defaultFilter: ClaimFilter = {
@@ -141,36 +46,93 @@ const priorityOrder: Record<ClaimPriority, number> = {
 export const useClaimsStore = create<ClaimsState>()(
   persist(
     (set, get) => ({
-      claims: claimsData as Claim[],
+      claims: [],
       selectedClaimId: null,
       filter: defaultFilter,
       sort: defaultSort,
+      isLoading: false,
+      error: null,
+
+      fetchClaims: async () => {
+        set({ isLoading: true, error: null });
+        try {
+          const response = await fetch('/api/claims');
+          if (!response.ok) {
+            throw new Error('Failed to fetch claims');
+          }
+          const claims = await response.json();
+          // Add actionHistory array if not present
+          const claimsWithHistory = claims.map((claim: Claim) => ({
+            ...claim,
+            actionHistory: claim.actionHistory || [],
+            diagnosisCodes: claim.diagnosisCodes || [],
+          }));
+          set({ claims: claimsWithHistory, isLoading: false });
+        } catch (error) {
+          set({ error: error instanceof Error ? error.message : 'Failed to fetch claims', isLoading: false });
+        }
+      },
+
+      refreshClaims: async () => {
+        try {
+          const response = await fetch('/api/claims');
+          if (!response.ok) {
+            throw new Error('Failed to fetch claims');
+          }
+          const claims = await response.json();
+          const claimsWithHistory = claims.map((claim: Claim) => ({
+            ...claim,
+            actionHistory: claim.actionHistory || [],
+            diagnosisCodes: claim.diagnosisCodes || [],
+          }));
+          set({ claims: claimsWithHistory });
+        } catch (error) {
+          console.error('Failed to refresh claims:', error);
+        }
+      },
 
       selectClaim: (id) => set({ selectedClaimId: id }),
 
-      updateClaimStatus: (id, status, notes, actionTaken) => {
-        set((state) => ({
-          claims: state.claims.map((claim) => {
-            if (claim.id !== id) return claim;
+      updateClaimStatus: async (id, status, notes, actionTaken) => {
+        try {
+          const response = await fetch(`/api/claims/${id}`, {
+            method: 'PATCH',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ status, notes, actionTaken }),
+          });
 
-            const action: ClaimAction = {
-              id: `ACT-${generateId()}`,
-              timestamp: new Date().toISOString(),
-              action: actionTaken || `Status changed to ${status}`,
-              performedBy: 'Claims Specialist',
-              previousStatus: claim.status,
-              newStatus: status,
-              notes,
-            };
+          if (!response.ok) {
+            throw new Error('Failed to update claim');
+          }
 
-            return {
-              ...claim,
-              status,
-              notes: notes ? [...claim.notes, notes] : claim.notes,
-              actionHistory: [...claim.actionHistory, action],
-            };
-          }),
-        }));
+          // Update local state
+          set((state) => ({
+            claims: state.claims.map((claim) => {
+              if (claim.id !== id) return claim;
+
+              const action: ClaimAction = {
+                id: `ACT-${generateId()}`,
+                timestamp: new Date().toISOString(),
+                action: actionTaken || `Status changed to ${status}`,
+                performedBy: 'Claims Specialist',
+                previousStatus: claim.status,
+                newStatus: status,
+                notes,
+              };
+
+              return {
+                ...claim,
+                status,
+                notes: notes ? [...claim.notes, notes] : claim.notes,
+                actionHistory: [...claim.actionHistory, action],
+              };
+            }),
+          }));
+        } catch (error) {
+          console.error('Failed to update claim status:', error);
+        }
       },
 
       addClaimNote: (id, note) => {
@@ -256,9 +218,9 @@ export const useClaimsStore = create<ClaimsState>()(
     {
       name: 'claims-storage',
       partialize: (state) => ({
-        claims: state.claims,
         filter: state.filter,
         sort: state.sort,
+        selectedClaimId: state.selectedClaimId,
       }),
     }
   )

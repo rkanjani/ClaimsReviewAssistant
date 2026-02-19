@@ -71,7 +71,7 @@ export function ClaimsList() {
         <Button
           size="sm"
           onClick={scrollToSelected}
-          className="absolute bottom-4 left-1/2 -translate-x-1/2 z-10 shadow-md bg-secondary-100 hover:bg-secondary-200 text-secondary-foreground border border-secondary-300"
+          className="absolute top-20 left-1/2 -translate-x-1/2 z-10 shadow-md bg-secondary-100 hover:bg-secondary-200 text-secondary-foreground border border-secondary-300"
         >
           Go to selected
         </Button>

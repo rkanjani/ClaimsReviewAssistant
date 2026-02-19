@@ -17,6 +17,9 @@ dist-ssr
 .env.local
 .env.*.local
 
+# Mutable data file (user-specific, not committed)
+src/data/data.json
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
