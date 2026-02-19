@@ -64,7 +64,7 @@ export function Sidebar() {
       <div className="p-4 mt-auto">
         <div className="rounded-lg bg-primary/5 border border-primary/20 p-3">
           <p className="text-xs text-muted-foreground">
-            <span className="font-medium text-primary">Tip:</span> Use Cmd+K to quickly focus the AI chat.
+            <span className="font-medium text-primary">Tip:</span> Use Cmd+K to quickly focus the chat.
           </p>
         </div>
       </div>

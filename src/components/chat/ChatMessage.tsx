@@ -1,4 +1,4 @@
-import { User, Bot, Loader2 } from 'lucide-react';
+import { Loader2 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import type { ChatMessage as ChatMessageType } from '@/types/chat';
 
@@ -10,26 +10,16 @@ export function ChatMessage({ message }: ChatMessageProps) {
   const isUser = message.role === 'user';
 
   return (
-    <div className={cn('flex gap-3', isUser && 'flex-row-reverse')}>
+    <div className={cn('flex flex-col', isUser && 'items-end')}>
+      <span className={cn('text-xs text-muted-foreground mb-1', isUser ? 'pr-2' : 'pl-2')}>
+        {isUser ? 'You' : 'Claims Assistant'}
+      </span>
       <div
         className={cn(
-          'flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center',
-          isUser ? 'bg-primary' : 'bg-muted'
-        )}
-      >
-        {isUser ? (
-          <User className="h-4 w-4 text-primary-foreground" />
-        ) : (
-          <Bot className="h-4 w-4 text-muted-foreground" />
-        )}
-      </div>
-
-      <div
-        className={cn(
-          'flex-1 max-w-[80%] rounded-lg px-4 py-3',
+          'rounded-3xl px-4 py-3',
           isUser
-            ? 'bg-primary text-primary-foreground'
-            : 'bg-muted text-foreground'
+            ? 'max-w-[65%] bg-[#16a34a] text-[#FFFFFF]'
+            : 'max-w-fit bg-muted text-foreground'
         )}
       >
         {message.isStreaming && !message.content ? (
@@ -38,7 +28,7 @@ export function ChatMessage({ message }: ChatMessageProps) {
             <span className="text-sm">Thinking...</span>
           </div>
         ) : (
-          <div className="text-sm whitespace-pre-wrap">{message.content}</div>
+          <div className={cn('text-sm whitespace-pre-wrap', isUser && 'text-[#FFFFFF]')}>{message.content}</div>
         )}
       </div>
     </div>

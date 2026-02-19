@@ -1,8 +1,106 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import type { Claim, ClaimStatus, ClaimFilter, ClaimSort, ClaimAction, ClaimPriority } from '@/types/claim';
-import claimsData from '@/data/claims.json';
-import { generateId } from '@/lib/utils';
+import rawClaimsData from '@/data/claims.json';
+import { generateId, getDaysUntil } from '@/lib/utils';
+
+// Raw JSON structure from claims.json
+interface RawLineItem {
+  cptCode: string;
+  description: string;
+  modifier?: string;
+  units: number;
+  billedAmount: number;
+  allowedAmount: number | null;
+  paidAmount: number;
+}
+
+interface RawPriorAction {
+  date: string;
+  type: string;
+  description: string;
+  outcome: string;
+}
+
+interface RawClaim {
+  claimId: string;
+  patient: {
+    name: string;
+    dateOfBirth: string;
+    memberId: string;
+  };
+  provider: {
+    name: string;
+    npi: string;
+    specialty: string;
+    facility: string;
+  };
+  payer: {
+    name: string;
+    payerId: string;
+  };
+  dateOfService: string;
+  dateSubmitted: string;
+  lineItems: RawLineItem[];
+  totalBilledAmount: number;
+  totalAllowedAmount: number | null;
+  totalPaidAmount: number;
+  status: ClaimStatus;
+  denialReason: string | null;
+  denialCode: string | null;
+  payerNotes: string;
+  priorActions: RawPriorAction[];
+  filingDeadline: string | null;
+}
+
+function computePriority(claim: RawClaim): ClaimPriority {
+  const deadline = claim.filingDeadline;
+  const amount = claim.totalBilledAmount;
+
+  if (deadline) {
+    const days = getDaysUntil(deadline);
+    if (days <= 14) return 'urgent';
+    if (days <= 30) return 'high';
+  }
+
+  if (amount >= 10000) return 'high';
+  if (amount >= 5000) return 'medium';
+
+  return 'low';
+}
+
+function transformClaim(raw: RawClaim): Claim {
+  return {
+    id: raw.claimId,
+    patientName: raw.patient.name,
+    patientId: raw.patient.memberId,
+    dateOfService: raw.dateOfService,
+    dateSubmitted: raw.dateSubmitted,
+    deadlineDate: raw.filingDeadline || undefined,
+    status: raw.status,
+    priority: computePriority(raw),
+    amount: raw.totalBilledAmount,
+    amountPaid: raw.totalPaidAmount > 0 ? raw.totalPaidAmount : undefined,
+    insuranceProvider: raw.payer.name,
+    insurancePolicyNumber: raw.payer.payerId,
+    procedureCodes: raw.lineItems.map(item => item.cptCode),
+    diagnosisCodes: [],
+    denialReason: raw.denialReason || undefined,
+    denialCode: raw.denialCode || undefined,
+    notes: raw.payerNotes ? [raw.payerNotes] : [],
+    actionHistory: raw.priorActions.map((action, index) => ({
+      id: `ACT-${raw.claimId}-${index}`,
+      timestamp: action.date,
+      action: action.type,
+      performedBy: 'System',
+      notes: action.description,
+    })),
+    facility: raw.provider.facility,
+    providerNpi: raw.provider.npi,
+  };
+}
+
+const claimsData = (rawClaimsData as RawClaim[]).map(transformClaim);
 
 interface ClaimsState {
   claims: Claim[];

@@ -1,4 +1,4 @@
-import { Menu, HelpCircle, Bell } from 'lucide-react';
+import { Menu } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useUIStore } from '@/stores';
 
@@ -27,14 +27,6 @@ export function Header() {
         </div>
       </div>
 
-      <div className="flex items-center gap-2">
-        <Button variant="ghost" size="icon" className="text-muted-foreground">
-          <Bell className="h-5 w-5" />
-        </Button>
-        <Button variant="ghost" size="icon" className="text-muted-foreground">
-          <HelpCircle className="h-5 w-5" />
-        </Button>
-      </div>
     </header>
   );
 }

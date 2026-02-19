@@ -1,5 +1,5 @@
 import { useRef, useEffect, useCallback } from 'react';
-import { MessageSquare } from 'lucide-react';
+import { MessageSquare, X } from 'lucide-react';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { ChatMessage } from './ChatMessage';
 import { ChatInput } from './ChatInput';
@@ -12,7 +12,11 @@ import type { SuggestedAction, AppealDraft, StatusUpdate, Claim } from '@/types/
 import type { PendingConfirmation, LookupClaimResult } from '@/types/chat';
 import { generateId, formatCurrency } from '@/lib/utils';
 
-export function ChatContainer() {
+interface ChatContainerProps {
+  onClose?: () => void;
+}
+
+export function ChatContainer({ onClose }: ChatContainerProps) {
   const {
     messages,
     isLoading,
@@ -115,7 +119,7 @@ export function ChatContainer() {
     } catch (error) {
       console.error('Chat error:', error);
       updateMessage(assistantMessageId, {
-        content: 'Sorry, there was an error processing your request. Please check your API key and try again.',
+        content: 'Sorry, there was an error processing your request. Please reach out to your system administrator.',
         isStreaming: false,
       });
     } finally {
@@ -185,9 +189,20 @@ export function ChatContainer() {
   return (
     <div className="h-full flex flex-col bg-background">
       <div className="p-4 border-b border-border bg-card">
-        <div className="flex items-center gap-2">
-          <MessageSquare className="h-5 w-5 text-primary" />
-          <h2 className="font-medium">AI Assistant</h2>
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <MessageSquare className="h-5 w-5 text-secondary" />
+            <h2 className="font-medium">Claims Assistant</h2>
+          </div>
+          {onClose && (
+            <button
+              onClick={onClose}
+              className="p-1 text-muted-foreground hover:text-foreground md:hidden"
+              aria-label="Close chat"
+            >
+              <X className="h-5 w-5" />
+            </button>
+          )}
         </div>
         <p className="text-sm text-muted-foreground mt-1">
           Ask questions about claims, get recommendations, and draft appeals
@@ -198,7 +213,7 @@ export function ChatContainer() {
         <div className="p-4 space-y-4">
           {messages.length === 0 ? (
             <div className="text-center py-8">
-              <MessageSquare className="h-12 w-12 text-muted-foreground/50 mx-auto mb-3" />
+              <MessageSquare className="h-12 w-12 text-secondary/50 mx-auto mb-3" />
               <p className="text-muted-foreground">
                 Start a conversation by asking about a claim
               </p>
@@ -228,7 +243,7 @@ export function ChatContainer() {
         <div className="px-4 pb-4">
           <div className="rounded-lg bg-secondary/10 border border-secondary/20 p-3">
             <p className="text-xs text-muted-foreground">
-              <span className="font-medium text-secondary">Note:</span> Add your VITE_ANTHROPIC_API_KEY to .env to enable the AI assistant.
+              <span className="font-medium text-secondary">Note:</span> Add your VITE_ANTHROPIC_API_KEY to .env to enable the assistant.
             </p>
           </div>
         </div>

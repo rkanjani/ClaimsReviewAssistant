@@ -12,20 +12,32 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import { ClaimStatusBadge } from './ClaimStatusBadge';
 import { ClaimPriorityIndicator } from './ClaimPriorityIndicator';
 import { useClaimsStore, useUIStore } from '@/stores';
-import { formatCurrency, formatDate, getDaysUntil } from '@/lib/utils';
+import { formatCurrency, formatDate, formatTimeUntil, getDeadlineUrgency, cn } from '@/lib/utils';
+
+const urgencyColors = {
+  normal: 'text-muted-foreground',
+  warning: 'text-status-pending font-medium',
+  urgent: 'text-status-denied font-medium',
+};
 
 export function ClaimDetailPanel() {
-  const { selectedClaimId, getClaim } = useClaimsStore();
+  const { selectedClaimId, getClaim, selectClaim } = useClaimsStore();
   const { isDetailPanelOpen, closeDetailPanel } = useUIStore();
 
   const claim = selectedClaimId ? getClaim(selectedClaimId) : null;
 
+  const handleClose = () => {
+    closeDetailPanel();
+    selectClaim(null);
+  };
+
   if (!claim) return null;
 
-  const daysUntilDeadline = claim.deadlineDate ? getDaysUntil(claim.deadlineDate) : null;
+  const deadlineUrgency = claim.deadlineDate ? getDeadlineUrgency(claim.deadlineDate) : null;
+  const timeUntilDeadline = claim.deadlineDate ? formatTimeUntil(claim.deadlineDate) : null;
 
   return (
-    <Sheet open={isDetailPanelOpen} onOpenChange={(open) => !open && closeDetailPanel()}>
+    <Sheet open={isDetailPanelOpen} onOpenChange={(open) => !open && handleClose()}>
       <SheetContent className="w-full sm:max-w-lg overflow-hidden flex flex-col">
         <SheetHeader>
           <div className="flex items-center justify-between">
@@ -54,11 +66,11 @@ export function ClaimDetailPanel() {
                   </div>
                 )}
               </div>
-              {daysUntilDeadline !== null && (
+              {timeUntilDeadline !== null && deadlineUrgency !== null && (
                 <div className="mt-3 flex items-center gap-2 text-sm">
-                  <Clock className="h-4 w-4 text-muted-foreground" />
-                  <span className={daysUntilDeadline <= 14 ? 'text-status-denied font-medium' : 'text-muted-foreground'}>
-                    {daysUntilDeadline} days until deadline
+                  <Clock className={cn("h-4 w-4", urgencyColors[deadlineUrgency])} />
+                  <span className={urgencyColors[deadlineUrgency]}>
+                    {timeUntilDeadline}
                   </span>
                 </div>
               )}
@@ -167,26 +179,30 @@ export function ClaimDetailPanel() {
             )}
 
             {/* Action History */}
-            <Separator />
-            <div>
-              <div className="flex items-center gap-2 mb-3">
-                <History className="h-4 w-4 text-muted-foreground" />
-                <h3 className="text-sm font-medium">Action History</h3>
-              </div>
-              <div className="space-y-3">
-                {claim.actionHistory.map((action) => (
-                  <div key={action.id} className="relative pl-4 border-l-2 border-border">
-                    <p className="text-sm font-medium">{action.action}</p>
-                    <p className="text-xs text-muted-foreground">
-                      {formatDate(action.timestamp)} • {action.performedBy}
-                    </p>
-                    {action.notes && (
-                      <p className="text-sm text-muted-foreground mt-1">{action.notes}</p>
-                    )}
+            {claim.actionHistory.length > 0 && (
+              <>
+                <Separator />
+                <div>
+                  <div className="flex items-center gap-2 mb-3">
+                    <History className="h-4 w-4 text-muted-foreground" />
+                    <h3 className="text-sm font-medium">Action History</h3>
                   </div>
-                ))}
-              </div>
-            </div>
+                  <div className="space-y-3">
+                    {claim.actionHistory.map((action) => (
+                      <div key={action.id} className="relative pl-4 border-l-2 border-border">
+                        <p className="text-sm font-medium">{action.action}</p>
+                        <p className="text-xs text-muted-foreground">
+                          {formatDate(action.timestamp)} • {action.performedBy}
+                        </p>
+                        {action.notes && (
+                          <p className="text-sm text-muted-foreground mt-1">{action.notes}</p>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </>
+            )}
           </div>
         </ScrollArea>
       </SheetContent>

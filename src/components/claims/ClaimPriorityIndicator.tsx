@@ -8,10 +8,10 @@ interface ClaimPriorityIndicatorProps {
 }
 
 const priorityConfig: Record<ClaimPriority, { icon: React.ElementType; color: string; label: string }> = {
-  urgent: { icon: AlertTriangle, color: 'text-status-denied', label: 'Urgent' },
-  high: { icon: ArrowUp, color: 'text-status-rejected', label: 'High' },
-  medium: { icon: Minus, color: 'text-status-pending', label: 'Medium' },
-  low: { icon: ArrowDown, color: 'text-status-underpaid', label: 'Low' },
+  urgent: { icon: AlertTriangle, color: 'text-status-denied', label: 'Urgent priority' },
+  high: { icon: ArrowUp, color: 'text-status-rejected', label: 'High priority' },
+  medium: { icon: Minus, color: 'text-status-pending', label: 'Medium priority' },
+  low: { icon: ArrowDown, color: 'text-status-underpaid', label: 'Low priority' },
 };
 
 export function ClaimPriorityIndicator({ priority, showLabel = false }: ClaimPriorityIndicatorProps) {

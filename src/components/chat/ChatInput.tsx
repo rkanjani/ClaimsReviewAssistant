@@ -29,7 +29,7 @@ export function ChatInput({ onSend, isLoading, disabled }: ChatInputProps) {
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
-    if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) {
+    if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault();
       handleSubmit();
     }
@@ -52,10 +52,11 @@ export function ChatInput({ onSend, isLoading, disabled }: ChatInputProps) {
           rows={1}
         />
         <Button
+          variant="secondary"
           onClick={handleSubmit}
           disabled={!input.trim() || isLoading || disabled}
           size="icon"
-          className="h-11 w-11 flex-shrink-0"
+          className="h-11 w-11 flex-shrink-0 bg-secondary-50 hover:bg-secondary-100"
         >
           {isLoading ? (
             <Loader2 className="h-4 w-4 animate-spin" />
@@ -64,9 +65,6 @@ export function ChatInput({ onSend, isLoading, disabled }: ChatInputProps) {
           )}
         </Button>
       </div>
-      <p className="text-xs text-muted-foreground mt-2">
-        Press Cmd+Enter to send
-      </p>
     </div>
   );
 }
