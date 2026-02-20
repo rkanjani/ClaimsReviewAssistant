@@ -53,14 +53,14 @@ function App() {
       <div className="h-full flex relative">
         {/* Claims List Panel */}
         <div className={cn(
-          "w-full md:w-[320px] lg:w-[420px] border-r border-border flex-shrink-0",
+          "w-full md:w-[280px] lg:w-[350px] border-r border-border flex-shrink-0",
           isMobileChatOpen && "hidden md:block"
         )}>
           <ClaimsList />
         </div>
 
         {/* Claim Detail View - Desktop only (middle column) */}
-        <div className="hidden md:flex md:w-[400px] lg:w-[580px] border-r border-border flex-shrink-0">
+        <div className="hidden md:flex md:w-[320px] lg:w-[380px] border-r border-border flex-shrink-0">
           <ClaimDetailView />
         </div>
 

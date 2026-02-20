@@ -38,7 +38,7 @@ export function ClaimDetailPanel() {
 
   return (
     <Sheet open={isDetailPanelOpen} onOpenChange={(open) => !open && handleClose()}>
-      <SheetContent className="w-full sm:max-w-lg overflow-hidden flex flex-col">
+      <SheetContent className="overflow-hidden flex flex-col">
         <SheetHeader>
           <div className="flex items-center justify-between">
             <SheetTitle>{claim.id}</SheetTitle>
