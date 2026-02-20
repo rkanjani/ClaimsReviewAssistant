@@ -23,7 +23,7 @@ I deployed a monolithic web service to DigitalOcean, primarily because I already
 There were quite a few requirements in the PRD and I wanted to spend more time on the experience and aesthetic, with less on architecture since it's just a SPA. That led me to rely on AI heavily in my implementation to deliver as much of a breadth that I could, while still diving deep into the craft and usability. I had multiple Claude Code terminals running, and was hopping back and forth with my changes I wanted to optimize my time. I still reviewed majority of the code that it was adding as I went along and ended up tweaking a lot. One thing I've noticed is that Claude leans into using useEffect more liberally than I would, but other than that I agree with a lot of the implementation details it took. One area of improvement would definitely be the message streaming from the Vercel AI SDK. I think it was poorly written and frankly messy, but I personally didn't want to spend more time on it since it was a small piece and still worked as expected. The system prompt was AI-generated as well, and I think that made sense since Claude definitely knew more about insurance claims than I did.
 
 
-## Design
+## Design and User Experience
 
 I think this is where I had the most fun. I drew a lot of inspo from the Joyful site because I personally like the theming and think it presents as a reliable, mature but still revolutionary brand.
 
